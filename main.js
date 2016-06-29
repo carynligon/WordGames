@@ -1,3 +1,4 @@
+
 // Here are the 100 most popular words in English, as totally
 // stolen from here: https://gist.github.com/gravitymonkey/2406023
 var commonWords = [
@@ -23,7 +24,7 @@ var guessInput = document.querySelector('input');
 var guess = '';
 var turnsLeft = 7;
 var pastGuesses = [];
-var pastGuessesDiv = document.querySelector('#guesses');
+var pastGuessesDisplay = document.querySelector('#past-guesses');
 
 
 startBtn.addEventListener('click', function () {
@@ -57,18 +58,24 @@ guessInput.addEventListener('keyup', function () {
   }
   if (wordDiv.textContent.indexOf('_') === -1) {
     guessInput.value = 'You won!';
+    confirm('You won! Refresh and hit start if you\'d like to play again!');
     }
   else {
-    turnsLeft--;
-    pastGuesses.push(guess);
-    console.log(pastGuesses);
-    guessInput.value = '';
-    if (turnsLeft === 0) {
-      guessInput.value = 'Game over';
-      prompt('Game over. Would you like to play again?');
+    if (pastGuesses.indexOf(guess) !== -1) {
+        confirm('You already guessed that, try again');
+      }
+    else {
+      turnsLeft--;
+      pastGuesses.push(guess);
+      pastGuessesDisplay.innerText = pastGuesses;
       guessInput.value = '';
-      numBlanks = [];
-      wordDiv.textContent = '';
+      if (turnsLeft === 0) {
+        guessInput.value = 'Game over';
+        wordDiv.textContent = selectedWord;
+        confirm('Game over! Refresh and hit start if you\'d like to play again!');
+        guessInput.value = '';
+        numBlanks = [];
+      }
     }
   }
 });
